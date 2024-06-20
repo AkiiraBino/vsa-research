@@ -1,0 +1,18 @@
+data/
+original-data/
+model/
+processing-data/
+__pycache__/
+labels/
+for-labeling/
+.docker/
+runs/
+yolov8n.pt
+Data VSA.zip
+.env
+__rzi_14380.193.rartemp
+ffmpeg-6.1.1
+ffmpeg-master-latest-win64-gpl
+keyframes
+dataset*
+*.Identifier
