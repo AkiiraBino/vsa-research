@@ -61,13 +61,12 @@ class VideoStream:
         imgsz: tuple[int, int] = (640, 640)
     ) -> None:
 
-
         extractor_absdiff_all = KeyFrameExtractor(
             mode_extractor=ModeExtractor.ABSDIFF_OUTLIER,
             mode_outlier=ModeOutlier.ALL,
         )
 
-        extractor_absdiff_all.calculate_threshold(self._extract_frames(10, address, (640, 640)))
+        extractor_absdiff_all.calculate_threshold(self._extract_frames(0.1, address, (640, 640)))
 
         if self.enable_zmq:
             print(f"start zmq on port {zmq_port}")
@@ -93,7 +92,7 @@ class VideoStream:
                     dst.send_pyobj(
                         {
                             "frame": curr_frame,
-                            "time_begin_stream": ts,
+                            "time_begin_stream": time_start,
                         }
                     )
 

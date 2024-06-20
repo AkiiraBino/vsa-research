@@ -1,5 +1,4 @@
 import argparse
-import logging
 
 from settings.config import config
 

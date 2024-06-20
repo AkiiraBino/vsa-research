@@ -82,7 +82,7 @@ class VideoStream:
 
         print("start extract frames for outlier")
         frames = self._extract_frames(
-            60,
+            0.1,
             address,
             imgsz
         )
