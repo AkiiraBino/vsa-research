@@ -12,19 +12,19 @@ parser.add_argument(
     "--num_cam",
     type=int,
     default=2,
-    help="Number of camers for streaming"
+    help="Количество источников видеоряда"
 )
 parser.add_argument(
     "--enable_display",
     type=bool,
     default=False,
-    help="Enable/disable display video from streams"
+    help="Включить/выключить отображение читаемых потоков"
 )
 parser.add_argument(
     "--enable_filter_keyframes",
     type=bool,
     default=True,
-    help="Enable/disable filtering keyframes with absdiff"
+    help="Включить/выключить фильтрацию кадров"
 )
 parser.add_argument(
     "--imgsz",
@@ -36,7 +36,7 @@ parser.add_argument(
     "--enable_zmq",
     type=bool,
     default=False,
-    help="Enable/disable transport to zmq"
+    help="Включить/выключить передачу по zmq"
 )
 
 args = parser.parse_args()

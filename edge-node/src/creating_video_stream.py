@@ -2,18 +2,11 @@ import cv2
 import zmq
 import numpy as np
 
-import sys
 from time import time
 
 import itertools 
 from typing import Iterable
 from multiprocessing import Pool
-
-from src.extract_keyframes import (
-    KeyFrameExtractor,
-    ModeExtractor,
-    ModeOutlier
-)
 
 
 class VideoStream:
@@ -61,16 +54,7 @@ class VideoStream:
         imgsz: tuple[int, int] = (640, 640)
     ) -> None:
 
-        extractor_absdiff_all = KeyFrameExtractor(
-            mode_extractor=ModeExtractor.ABSDIFF_OUTLIER,
-            mode_outlier=ModeOutlier.ALL,
-        )
 
-        extractor_absdiff_all.calculate_threshold(self._extract_frames(0.1, address, (640, 640)))
-
-        if self.enable_zmq:
-            print(f"start zmq on port {zmq_port}")
-            dst = self._create_zmq(zmq_port)
 
         print("create capture...")
         capture = cv2.VideoCapture(address)
@@ -79,24 +63,16 @@ class VideoStream:
             curr_frame = cv2.resize(curr_frame, imgsz)
 
 
-        time_start = time()
         print("begin stream")
         while(capture.isOpened()):
-            prev_frame = curr_frame
             status, curr_frame = capture.read()
-            if not status or (cv2.waitKey(1) & 0xFF == ord('q')): break
+            if not status or (cv2.waitKey(50) & 0xFF == ord('q')):
+                break
             curr_frame = cv2.resize(curr_frame, imgsz)
             
-            if extractor_absdiff_all.check(curr_frame, prev_frame): 
-                if self.enable_zmq:
-                    dst.send_pyobj(
-                        {
-                            "frame": curr_frame,
-                            "time_begin_stream": time_start,
-                        }
-                    )
 
-                if enable_display: cv2.imshow('frame', curr_frame)
+            if enable_display:
+                cv2.imshow('frame', curr_frame)
             
         capture.release()
         cv2.destroyAllWindows()
